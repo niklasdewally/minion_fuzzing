@@ -2,33 +2,39 @@
 
 # Fuzz all sorts of minions
 
-mkdir std_build
+CONFIGURE=$(realpath minion/configure.py)
+mkdir -p std_build
 cd std_build
-python3 ../configure.py --quick --compiler=$(which afl-clang-fast++)
+python3 $CONFIGURE --quick --compiler=$(which afl-clang-fast++)
+nice make 
 cd ..
 
-mkdir lib_build
+mkdir -p lib_build
 cd lib_build
-python3 ../configure.py --quick --lib --compiler=$(which afl-clang-fast++)
+python3 $CONFIGURE --quick --lib --compiler=$(which afl-clang-fast++)
+nice make 
 cd ..
 
-mkdir asan_build
+mkdir -p asan_build
 cd asan_build
 export AFL_USE_ASAN=1
-python3 ../configure.py --quick --lib --compiler=$(which afl-clang-fast++)
+python3 $CONFIGURE --quick --lib --compiler=$(which afl-clang-fast++)
+nice make 
 unset AFL_USE_ASAN
 cd ..
 
-mkdir msan_build
+mkdir -p msan_build
 cd msan_build
 export AFL_USE_MSAN=1
-python3 ../configure.py --quick --lib --compiler=$(which afl-clang-fast++)
+python3 $CONFIGURE --quick --lib --compiler=$(which afl-clang-fast++)
+nice make 
 unset AFL_USE_MSAN
 cd ..
 
-mkdir ubsan_build
+mkdir -p ubsan_build
 cd ubsan_build
 export AFL_USE_UBSAN=1
-python3 ../configure.py --quick --lib --compiler=$(which afl-clang-fast++)
+python3 $CONFIGURE --quick --lib --compiler=$(which afl-clang-fast++)
+nice make 
 unset AFL_USE_UBSAN
 cd ..
